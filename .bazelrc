@@ -1,0 +1,7 @@
+common --cxxopt=-std=c++20
+common --host_cxxopt=-std=c++20
+
+common --enable_platform_specific_config
+build:macos --features=-module_maps
+
+try-import %workspace%/.bazelrc.user
