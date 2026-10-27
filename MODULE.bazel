@@ -10,32 +10,54 @@ bazel_dep(name = "llvm", version = "0.8.25")
 register_toolchains("@llvm//toolchain:all")
 
 # The hermetic macOS SDK ships a minimal framework set. Naming any framework
-# replaces that default set rather than adding to it, so the list carries the
-# defaults plus everything SDL3 and GLFW link on macOS.
+# replaces that default set rather than adding to it, and nothing pulls in a
+# framework's own dependencies: the list is the defaults, everything SDL3, GLFW
+# and raylib link, and every framework their headers include in turn. A missing
+# one surfaces only on macOS, as a header not found or an unresolved framework.
 osx = use_extension("@llvm//extensions:osx.bzl", "osx")
 osx.frameworks(names = [
+    "AVFAudio",
     "AVFoundation",
     "AppKit",
+    "ApplicationServices",
     "AudioToolbox",
+    "AudioUnit",
+    "CFNetwork",
     "Carbon",
+    "CloudKit",
     "Cocoa",
+    "ColorSync",
     "CoreAudio",
+    "CoreAudioTypes",
+    "CoreData",
     "CoreFoundation",
     "CoreGraphics",
     "CoreHaptics",
+    "CoreImage",
+    "CoreLocation",
+    "CoreMIDI",
     "CoreMedia",
+    "CoreServices",
+    "CoreText",
     "CoreVideo",
+    "DiskArbitration",
     "ForceFeedback",
     "Foundation",
     "GameController",
     "IOKit",
+    "IOSurface",
+    "ImageIO",
     "Kernel",
+    "MediaToolbox",
     "Metal",
     "OSLog",
+    "OpenGL",
     "QuartzCore",
     "Security",
+    "Symbols",
     "SystemConfiguration",
     "UniformTypeIdentifiers",
+    "_LocationEssentials",
 ])
 
 # Native cc rules; the X11, Wayland and ALSA headers come from the BCR too, and
