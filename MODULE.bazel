@@ -12,12 +12,16 @@ register_toolchains("@llvm//toolchain:all")
 # The hermetic macOS SDK ships a minimal framework set. Naming any framework
 # replaces that default set rather than adding to it, and nothing pulls in a
 # framework's own dependencies: the list is the defaults, everything SDL3, GLFW
-# and raylib link, and every framework their headers include in turn. A missing
-# one surfaces only on macOS, as a header not found or an unresolved framework.
+# and raylib link, every framework their headers include in turn, and every
+# framework their .tbd re-exports and symlinks point into (AVRouting from
+# AVFoundation; the private FontServices from ApplicationServices). A missing one
+# surfaces only on macOS: a header not found, an unresolved re-export, or a
+# dangling symlink Bazel rejects as an unsupported file type.
 osx = use_extension("@llvm//extensions:osx.bzl", "osx")
 osx.frameworks(names = [
     "AVFAudio",
     "AVFoundation",
+    "AVRouting",
     "AppKit",
     "ApplicationServices",
     "AudioToolbox",
@@ -41,6 +45,7 @@ osx.frameworks(names = [
     "CoreText",
     "CoreVideo",
     "DiskArbitration",
+    "FontServices",
     "ForceFeedback",
     "Foundation",
     "GameController",
