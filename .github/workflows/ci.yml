@@ -14,7 +14,13 @@ defaults:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # macOS builds against a hermetic SDK trimmed to a framework list in
+        # MODULE.bazel; only a mac build checks that list.
+        os: [ubuntu-latest, macos-26]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v7
 
