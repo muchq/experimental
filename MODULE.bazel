@@ -70,7 +70,7 @@ osx.frameworks(names = [
 
 # Native cc rules; the X11, Wayland and ALSA headers come from the BCR too, and
 # SDL loads those libraries at runtime by soname.
-bazel_dep(name = "sdl3", version = "3.4.18")
+bazel_dep(name = "sdl3", version = "3.4.20")
 
 # raylib's desktop backend. raylib itself is not in the BCR.
 bazel_dep(name = "glfw", version = "3.4.0.bcr.4")
